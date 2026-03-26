@@ -1,0 +1,37 @@
+import java.util.ArrayList;
+
+public class StudentManager {
+    private ArrayList<Person> people;
+
+    public StudentManager() {
+        people = new ArrayList<>();
+    }
+
+    public void addPerson(Person p) {
+        people.add(p);
+    }
+
+    public void removeStudent(String id) {
+        people.removeIf(p -> p.getId().equals(id));
+    }
+
+    public Person searchById(String id) {
+        for (Person p : people) {
+            if (p.getId().equals(id)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public void displayAll() {
+        if (people.isEmpty()) {
+            System.out.println("No records found.");
+            return;
+        }
+
+        for (Person p : people) {
+            System.out.println(p.getDetails());
+        }
+    }
+}
