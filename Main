@@ -1,0 +1,126 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        StudentManager manager = new StudentManager();
+
+        while (true) {
+            System.out.println("\n===== MENU =====");
+            System.out.println("1. Add Student");
+            System.out.println("2. Add Instructor");
+            System.out.println("3. Add Course to Student");
+            System.out.println("4. Display All");
+            System.out.println("5. Search by ID");
+            System.out.println("6. Remove by ID");
+            System.out.println("7. Exit");
+
+            System.out.print("Choose option: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            try {
+                switch (choice) {
+
+                    case 1:
+                        System.out.print("Enter name: ");
+                        String sName = sc.nextLine();
+
+                        System.out.print("Enter ID (S-1234): ");
+                        String sId = sc.nextLine();
+
+                        System.out.print("Enter email: ");
+                        String sEmail = sc.nextLine();
+
+                        if (!Validator.isValidID(sId))
+                            throw new IllegalArgumentException("Invalid ID format!");
+
+                        if (!Validator.isValidEmail(sEmail))
+                            throw new IllegalArgumentException("Invalid email!");
+
+                        Student student = new Student(sName, sId, sEmail);
+                        manager.addPerson(student);
+
+                        System.out.println("Student added successfully!");
+                        break;
+
+                    case 2:
+                        System.out.print("Enter name: ");
+                        String iName = sc.nextLine();
+
+                        System.out.print("Enter ID: ");
+                        String iId = sc.nextLine();
+
+                        System.out.print("Enter email: ");
+                        String iEmail = sc.nextLine();
+
+                        if (!Validator.isValidEmail(iEmail))
+                            throw new IllegalArgumentException("Invalid email!");
+
+                        Instructor instructor = new Instructor(iName, iId, iEmail);
+                        manager.addPerson(instructor);
+
+                        System.out.println("Instructor added!");
+                        break;
+
+                    case 3:
+                        System.out.print("Enter student ID: ");
+                        String id = sc.nextLine();
+
+                        Person p = manager.searchById(id);
+
+                        if (p instanceof Student) {
+                            Student s = (Student) p;
+
+                            System.out.print("Enter course (e.g., CSC101): ");
+                            String course = sc.nextLine();
+
+                            if (!Validator.isValidCourse(course))
+                                throw new IllegalArgumentException("Invalid course format!");
+
+                            s.addCourse(course);
+                            System.out.println("Course added!");
+                        } else {
+                            System.out.println("Student not found.");
+                        }
+                        break;
+
+                    case 4:
+                        manager.displayAll();
+                        break;
+
+                    case 5:
+                        System.out.print("Enter ID: ");
+                        String searchId = sc.nextLine();
+
+                        Person found = manager.searchById(searchId);
+
+                        if (found != null)
+                            System.out.println(found.getDetails());
+                        else
+                            System.out.println("Not found.");
+                        break;
+
+                    case 6:
+                        System.out.print("Enter ID to remove: ");
+                        String removeId = sc.nextLine();
+
+                        manager.removeStudent(removeId);
+                        System.out.println("Removed (if existed).");
+                        break;
+
+                    case 7:
+                        System.out.println("Exiting program.");
+                        return;
+
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+}
