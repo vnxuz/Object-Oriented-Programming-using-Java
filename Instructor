@@ -1,0 +1,12 @@
+public class Instructor extends Person {
+
+    public Instructor(String name, String id, String email) {
+        super(name, id, email);
+    }
+
+    @Override
+    public String getDetails() {
+        return "----- INSTRUCTOR -----\n" +
+               "Name: " + getName() + "\n" +
+               "ID: " + getId() + "\n" +
+               "Email: " + getEmail() + "\n";
